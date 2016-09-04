@@ -77,7 +77,8 @@
     <Compile Include="Assets\Scripts\Platformer2DUserControl_.cs" />
     <Compile Include="Assets\Scripts\PlatformerCharacter2D.cs" />
     <Compile Include="Assets\Scripts\PlatformerCharacter2D_.cs" />
-    <Compile Include="Assets\bonus_script.cs" />
+    <Compile Include="Assets\Scripts\bonus_script.cs" />
+    <Compile Include="Assets\Scripts\destroy_obj.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
