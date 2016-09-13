@@ -23,6 +23,9 @@ public class PlatformerCharacter2D : MonoBehaviour
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
     private Transform m_CeilingCheck;   // A position marking where to check for ceilings
+
+    
+
     const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
     private Animator m_Anim;            // Reference to the player's animator component.
     private Rigidbody2D m_Rigidbody2D;
@@ -161,34 +164,94 @@ public class PlatformerCharacter2D : MonoBehaviour
 
     public void shotBox()
     {
-        Transform[] trns = GetComponentsInChildren<Transform>();
+        Transform box = findBox();
 
-        foreach(Transform box in trns)
-        {
-            if (box.tag == "Box" || box.tag == "Apple")
-            {
-                this.box = box;
-                box.position = new Vector2(box.transform.position.x, box.transform.position.y - 1);
-                shot_position = box.transform.position.x;
-                box.parent = null;
-                localscale = transform.localScale.x;
+        
+        this.box = box;
+        box.position = new Vector2(box.transform.position.x, box.transform.position.y - 1);
+        shot_position = box.transform.position.x;
+        box.parent = null;
+        localscale = transform.localScale.x;
 
-                box.transform.localScale = new Vector3(Mathf.Abs(box.transform.localScale.x), box.transform.localScale.y, box.transform.localScale.z);
+        box.transform.localScale = new Vector3(Mathf.Abs(box.transform.localScale.x), box.transform.localScale.y, box.transform.localScale.z);
 
                 
-                if(box.tag == "Apple")
-                {
-                    m_JumpForce = m_JumpForce * 1.33f;
-                }
-
-                //m_Anim.SetBool("Shot",true);
-                m_Anim.SetTrigger("Shot1");
-                GetComponent<Platformer2DUserControl>().handBox = false;
-            }
-                       
+        if(box.tag == "Apple")
+        {
+            m_JumpForce = m_JumpForce * 1.33f;
         }
+
+        //m_Anim.SetBool("Shot",true);
+        m_Anim.SetTrigger("Shot1");
+        GetComponent<Platformer2DUserControl>().handBox = false;
+        
                    
     }
 
-    
+    public void Couch_box(bool couch_box)
+    {
+        Transform box = findBox();
+
+        Transform _box;
+        if (box.tag == "Box")
+        {
+
+            _box = box;
+        }
+        else _box = null;
+
+        
+
+
+        if(_box)
+        { 
+            if (couch_box)
+            {
+                GetComponent<SpriteRenderer>().enabled = false;
+                _box.position = new Vector2(_box.transform.position.x, _box.transform.position.y - 2);
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().enabled = true;
+                _box.position = new Vector2(_box.transform.position.x, _box.transform.position.y + 2);
+            }
+        }
+    }
+
+    public void shotBoxCouch()
+    {
+        Transform box = findBox();
+
+        this.box = box;
+        //box.position = new Vector2(box.transform.position.x, box.transform.position.y - 2);
+        shot_position = box.transform.position.x;
+        box.parent = null;
+        localscale = transform.localScale.x;
+
+        box.transform.localScale = new Vector3(Mathf.Abs(box.transform.localScale.x), box.transform.localScale.y, box.transform.localScale.z);
+
+        GetComponent<SpriteRenderer>().enabled = true;
+
+        m_Anim.SetTrigger("Shot1");
+        GetComponent<Platformer2DUserControl>().handBox = false;
+    }
+
+    private Transform findBox()
+    {
+        Transform[] trns = GetComponentsInChildren<Transform>();
+
+        foreach (Transform box in trns)
+        {
+            if (box.tag == "Box" || box.tag == "Apple")
+            {
+
+                return box;
+            }
+
+        }
+
+        return null;
+    }
+
+
 }

@@ -8,6 +8,7 @@ public class Platformer2DUserControl : MonoBehaviour
 
     private PlatformerCharacter2D m_Character;
     private bool m_Jump;
+	private bool couch_box;
     public bool canBox;
     public bool handBox;
     public string axis;
@@ -26,9 +27,13 @@ public class Platformer2DUserControl : MonoBehaviour
         if (canBox && !handBox && Input.GetKeyDown(KeyCode.Z))
             m_Character.getBox(box);
 
-        if(handBox && Input.GetKeyDown(KeyCode.X))
+        if (handBox && !couch_box && Input.GetKeyDown(KeyCode.X))
         {
             m_Character.shotBox();
+        }
+        else if (handBox && couch_box && Input.GetKeyDown(KeyCode.X))
+        {
+            m_Character.shotBoxCouch();
         }
 
 
@@ -37,6 +42,19 @@ public class Platformer2DUserControl : MonoBehaviour
             // Read the jump input in Update so button presses aren't missed.
             m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
         }
+
+        if (handBox && Input.GetKeyDown(KeyCode.S))
+        {
+            couch_box = true;
+            m_Character.Couch_box(true);
+        }
+
+        if (handBox && couch_box && Input.GetKeyUp(KeyCode.S))
+        {
+            couch_box = false;
+            m_Character.Couch_box(false);
+        }
+
     }
 
 
